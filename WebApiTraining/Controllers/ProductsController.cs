@@ -12,6 +12,7 @@ using WebApiTraining.Models;
 
 namespace WebApiTraining.Controllers
 {
+    [RoutePrefix("products")]
     public class ProductsController : ApiController
     {
         private FabricsEntities db = new FabricsEntities();
@@ -22,6 +23,7 @@ namespace WebApiTraining.Controllers
         }
 
         // GET: api/Products
+        [Route("")]
         public IQueryable<Product> GetProduct()
         {
             return db.Product;
@@ -29,6 +31,7 @@ namespace WebApiTraining.Controllers
 
         // GET: api/Products/5
         [ResponseType(typeof(Product))]
+        [Route("{id}:int",Name ="GetProductById")]
         public IHttpActionResult GetProduct(int id)
         {
             Product product = db.Product.Find(id);
@@ -40,8 +43,8 @@ namespace WebApiTraining.Controllers
             return Ok(product);
         }
 
-        [ResponseType(typeof(Product))]
-        [Route("products/{id}/orderlines")]
+        [ResponseType(typeof(IQueryable<OrderLine>))]
+        [Route("{id}/orderlines")]
         public IHttpActionResult GetProductOrderLines(int id)
         {
             var orderlines = db.OrderLine.Where(p => p.ProductId == id);
@@ -57,6 +60,7 @@ namespace WebApiTraining.Controllers
         /// <param name="product"></param>
         /// <returns></returns>
         [ResponseType(typeof(void))]
+        [Route("{id}")]
         public IHttpActionResult PutProduct(int id, Product product)
         {
             if (!ModelState.IsValid)
@@ -92,6 +96,7 @@ namespace WebApiTraining.Controllers
 
         // POST: api/Products
         [ResponseType(typeof(Product))]
+        [Route("")]
         public IHttpActionResult PostProduct(Product product)
         {
             if (!ModelState.IsValid)
@@ -102,11 +107,12 @@ namespace WebApiTraining.Controllers
             db.Product.Add(product);
             db.SaveChanges();
 
-            return CreatedAtRoute("DefaultApi", new { id = product.ProductId }, product);
+            return CreatedAtRoute("GetProductById", new { id = product.ProductId }, product);
         }
 
         // DELETE: api/Products/5
         [ResponseType(typeof(Product))]
+        [Route("{id}")]
         public IHttpActionResult DeleteProduct(int id)
         {
             Product product = db.Product.Find(id);
