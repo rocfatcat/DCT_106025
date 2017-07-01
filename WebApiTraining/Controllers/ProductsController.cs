@@ -40,6 +40,15 @@ namespace WebApiTraining.Controllers
             return Ok(product);
         }
 
+        [ResponseType(typeof(Product))]
+        [Route("products/{id}/orderlines")]
+        public IHttpActionResult GetProductOrderLines(int id)
+        {
+            var orderlines = db.OrderLine.Where(p => p.ProductId == id);
+           
+            return Ok(orderlines);
+        }
+
         // PUT: api/Products/5
         /// <summary>
         /// Modify Product Data By ID
