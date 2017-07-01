@@ -20,6 +20,7 @@ namespace WebApiTraining.Controllers
         {
             db.Configuration.LazyLoadingEnabled = false;
         }
+
         // GET: api/Products
         public IQueryable<Product> GetProduct()
         {
@@ -40,6 +41,12 @@ namespace WebApiTraining.Controllers
         }
 
         // PUT: api/Products/5
+        /// <summary>
+        /// Modify Product Data By ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="product"></param>
+        /// <returns></returns>
         [ResponseType(typeof(void))]
         public IHttpActionResult PutProduct(int id, Product product)
         {
